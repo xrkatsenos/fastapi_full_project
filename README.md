@@ -107,6 +107,37 @@ To deploy the application using the Helm chart:
     helm uninstall my-fastapi -n fastapi-test
     ```
 
+### Publish Helm Chart to GitLab Package Registry
+
+To package and publish the Helm chart to GitLab's OCI registry:
+
+1.  **Package the Chart:**
+    ```bash
+    helm package ./helm/fastapi
+    ```
+    This creates a file like `fastapi-0.1.0.tgz`.
+
+2.  **Login to GitLab Registry:**
+    ```bash
+    helm registry login registry.gitlab.com -u YOUR_GITLAB_USERNAME -p YOUR_GITLAB_TOKEN
+    ```
+    Or use a deploy token:
+    ```bash
+    helm registry login registry.gitlab.com -u YOUR_DEPLOY_TOKEN_USERNAME -p YOUR_DEPLOY_TOKEN
+    ```
+
+3.  **Push the Chart:**
+    ```bash
+    helm push fastapi-0.1.0.tgz oci://registry.gitlab.com/YOUR_GITLAB_USERNAME/YOUR_PROJECT_NAME
+    ```
+
+4.  **Install from GitLab Registry:**
+    ```bash
+    helm install my-fastapi oci://registry.gitlab.com/YOUR_GITLAB_USERNAME/YOUR_PROJECT_NAME/fastapi --version 0.1.0 -n fastapi-test --create-namespace
+    ```
+
+> **Note**: Replace `YOUR_GITLAB_USERNAME`, `YOUR_PROJECT_NAME`, and `YOUR_GITLAB_TOKEN` with your actual GitLab credentials.
+
 ## 5. Deploy using OpenTofu
 
 To deploy the application using OpenTofu (Infrastructure as Code):
