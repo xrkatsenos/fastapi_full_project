@@ -90,12 +90,19 @@ To deploy the application using the Helm chart:
     helm install my-fastapi ./helm/fastapi --namespace fastapi-test --create-namespace
     ```
 
-2.  **Verify the Release:**
+2.  **Access the Application:**
+    The service is created as ClusterIP by default. Use port-forwarding to access it locally:
+    ```bash
+    kubectl port-forward -n fastapi-test svc/my-fastapi 8080:80
+    ```
+    The app will be available at `http://localhost:8080`.
+
+3.  **Verify the Release:**
     ```bash
     helm list -n fastapi-test
     ```
 
-3.  **Uninstall the Chart:**
+4.  **Uninstall the Chart:**
     ```bash
     helm uninstall my-fastapi -n fastapi-test
     ```
